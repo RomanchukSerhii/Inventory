@@ -1,4 +1,4 @@
-package com.example.inventory.data
+package com.example.inventory.data.item
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
