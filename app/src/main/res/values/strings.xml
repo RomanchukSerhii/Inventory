@@ -5,9 +5,9 @@
     <string name="item">ITEM</string>
     <string name="quantity_in_stock">QUANTITY IN STOCK</string>
     <string name="price">PRICE</string>
-    <string name="product_name">Product Name <font color='FF0000'>*</font></string>
-    <string name="product_price">Product Price <font color='FF0000'>*</font></string>
-    <string name="quantity_in_stock_hint">Quantity in Stock <font color='FF0000'>*</font></string>
+    <string name="product_name">Product Name</string>
+    <string name="product_price">Product Price</string>
+    <string name="quantity_in_stock_hint">Quantity in Stock</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
 </resources>

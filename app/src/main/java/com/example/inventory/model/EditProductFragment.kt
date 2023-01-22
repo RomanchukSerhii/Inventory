@@ -23,8 +23,21 @@ class EditProductFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        addRedAsterisk()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun addRedAsterisk() {
+        with(binding) {
+            tilProductName.markRequired()
+            tilProductPrice.markRequired()
+            tilQuantity.markRequired()
+        }
     }
 }
