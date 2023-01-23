@@ -1,15 +1,14 @@
 package com.example.inventory.model
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.example.inventory.R
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.inventory.databinding.FragmentInventoryBinding
 import com.example.inventory.model.adapter.ItemListAdapter
 import com.example.inventory.viewmodel.MainViewModel
@@ -21,6 +20,7 @@ class InventoryFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentInventoryBinding == null")
 
     private val sharedViewModel: MainViewModel by activityViewModels()
+    private lateinit var itemListAdapter: ItemListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,14 +28,14 @@ class InventoryFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentInventoryBinding.inflate(inflater, container, false)
+        itemListAdapter = ItemListAdapter { onListItemClick(it) }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val itemListAdapter = ItemListAdapter {
-            onListItemClick(it)
-        }
+
+        removeItemOnSwipe()
         sharedViewModel.itemsListLiveData.observe(requireActivity()) {
             itemListAdapter.submitList(it)
         }
@@ -54,6 +54,28 @@ class InventoryFragment : Fragment() {
     private fun goToAddProduct() {
         val action = InventoryFragmentDirections.actionInventoryFragmentToAddProductFragment()
         findNavController().navigate(action)
+    }
+
+    private fun removeItemOnSwipe() {
+        val callback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val item = itemListAdapter.currentList[viewHolder.adapterPosition]
+                sharedViewModel.removeItem(item)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
     private fun onListItemClick(position: Int) {

@@ -33,4 +33,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             itemDao.replace(id, name, price, quantity)
         }
     }
+
+    fun removeItem(item: Item) {
+        thread {
+            itemDao.remove(item.id)
+        }
+    }
 }
