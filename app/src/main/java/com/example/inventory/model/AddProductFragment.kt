@@ -1,16 +1,12 @@
 package com.example.inventory.model
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.buildSpannedString
-import androidx.core.text.color
-import com.example.inventory.R
+import androidx.navigation.fragment.findNavController
 import com.example.inventory.databinding.FragmentAddProductBinding
-import com.google.android.material.textfield.TextInputLayout
 
 
 class AddProductFragment : Fragment() {
@@ -31,18 +27,34 @@ class AddProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addRedAsterisk()
-    }
+        binding.buttonCancel.setOnClickListener {
+            backToInventoryFragment()
+        }
 
-    private fun addRedAsterisk() {
-        with(binding) {
-            tilProductName.markRequired()
-            tilProductPrice.markRequired()
-            tilQuantity.markRequired()
+        binding.buttonSave.setOnClickListener {
+            saveItem()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun saveItem() {
+        backToInventoryFragment()
+    }
+
+    private fun backToInventoryFragment() {
+        val action = AddProductFragmentDirections.actionAddProductFragmentToInventoryFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun addRedAsterisk() {
+        with(binding) {
+            tilProductName.markRequiredInRed()
+            tilProductPrice.markRequiredInRed()
+            tilQuantity.markRequiredInRed()
+        }
     }
 }

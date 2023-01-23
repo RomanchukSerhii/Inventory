@@ -15,7 +15,7 @@ import com.google.android.material.textfield.TextInputLayout
 /**
  * Add red asterisk to hint in TextInputLayout
  */
-fun TextInputLayout.markRequired() {
+fun TextInputLayout.markRequiredInRed() {
     hint = buildSpannedString {
         append(hint)
         color(Color.RED) { append(" *") } // Mind the space prefix.

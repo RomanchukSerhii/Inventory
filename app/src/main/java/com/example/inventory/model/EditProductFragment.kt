@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.inventory.R
+import androidx.navigation.fragment.findNavController
 import com.example.inventory.databinding.FragmentEditProductBinding
 
 
@@ -26,6 +26,12 @@ class EditProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addRedAsterisk()
+        binding.buttonSave.setOnClickListener {
+            saveItem()
+        }
+        binding.buttonCancel.setOnClickListener {
+            backToInventoryFragment()
+        }
     }
 
     override fun onDestroyView() {
@@ -33,11 +39,20 @@ class EditProductFragment : Fragment() {
         _binding = null
     }
 
+    private fun saveItem() {
+        backToInventoryFragment()
+    }
+
+    private fun backToInventoryFragment() {
+        val action = EditProductFragmentDirections.actionEditProductFragmentToInventoryFragment()
+        findNavController().navigate(action)
+    }
+
     private fun addRedAsterisk() {
         with(binding) {
-            tilProductName.markRequired()
-            tilProductPrice.markRequired()
-            tilQuantity.markRequired()
+            tilProductName.markRequiredInRed()
+            tilProductPrice.markRequiredInRed()
+            tilQuantity.markRequiredInRed()
         }
     }
 }

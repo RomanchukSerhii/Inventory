@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.inventory.R
 import com.example.inventory.databinding.FragmentInventoryBinding
+import com.example.inventory.model.adapter.ItemListAdapter
 
 
 class InventoryFragment : Fragment() {
@@ -27,9 +28,19 @@ class InventoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val itemListAdapter = ItemListAdapter {
+            onListItemClick(it)
+        }
+        binding.recyclerView.adapter = itemListAdapter
+
         binding.buttonAddProduct.setOnClickListener {
             goToAddProduct()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun goToAddProduct() {
@@ -37,8 +48,8 @@ class InventoryFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun onListItemClick(id: Int) {
+        val action = InventoryFragmentDirections.actionInventoryFragmentToEditProductFragment()
+        findNavController().navigate(action)
     }
 }
