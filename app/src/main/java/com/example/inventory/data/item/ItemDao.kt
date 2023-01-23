@@ -19,4 +19,7 @@ interface ItemDao {
 
     @Query("DELETE FROM items WHERE id = :id")
     fun remove(id: Int)
+
+    @Query("UPDATE items SET name = :name, price = :price, quantity = :quantity WHERE id = :id")
+    fun replace(id: Int, name: String, price: Double, quantity: Int)
 }

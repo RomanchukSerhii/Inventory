@@ -9,7 +9,7 @@ import com.example.inventory.data.item.Item
 import com.example.inventory.databinding.ItemBinding
 
 class ItemListAdapter(
-    private val onItemClick: (id: Int) -> Unit
+    private val onItemClick: (position: Int) -> Unit
 ) : ListAdapter<Item, ItemListAdapter.ItemViewHolder>(ItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -42,7 +42,7 @@ class ItemListAdapter(
         }
 
         override fun onClick(v: View?) {
-            onItemClick(itemView.id)
+            onItemClick(adapterPosition)
         }
 
     }

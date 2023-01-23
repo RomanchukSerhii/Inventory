@@ -32,6 +32,18 @@
         android:name="com.example.inventory.model.EditProductFragment"
         android:label="Edit Product"
         tools:layout="@layout/fragment_edit_product">
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="price"
+            app:argType="float" />
+        <argument
+            android:name="quantity"
+            app:argType="integer" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
         <action
             android:id="@+id/action_editProductFragment_to_inventoryFragment"
             app:destination="@id/inventoryFragment" />
