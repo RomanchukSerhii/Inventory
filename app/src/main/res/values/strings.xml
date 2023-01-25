@@ -8,7 +8,10 @@
     <string name="product_name">Product Name</string>
     <string name="product_price">Product Price</string>
     <string name="quantity_in_stock_hint">Quantity in Stock</string>
+    <string name="quantity_detail">Quantity in Stock: %d</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="warning">All fields must bt filled</string>
+    <string name="sell">Sell</string>
+    <string name="delete">Delete</string>
 </resources>
