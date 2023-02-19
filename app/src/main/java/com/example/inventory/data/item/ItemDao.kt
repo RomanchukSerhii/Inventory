@@ -1,10 +1,7 @@
 package com.example.inventory.data.item
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface ItemDao {
@@ -15,11 +12,14 @@ interface ItemDao {
     fun getItem(id: Int): LiveData<Item>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun addItem(item: Item)
+    suspend fun addItem(item: Item)
 
     @Query("DELETE FROM items WHERE id = :id")
-    fun remove(id: Int)
+    suspend fun remove(id: Int)
 
-    @Query("UPDATE items SET name = :name, price = :price, quantity = :quantity WHERE id = :id")
-    fun replace(id: Int, name: String, price: Double, quantity: Int)
+    @Update
+    suspend fun updateItem(item: Item)
+
+    @Query("UPDATE items SET quantity = :quantity WHERE id = :id")
+    suspend fun changeQuantity(id: Int, quantity: Int)
 }

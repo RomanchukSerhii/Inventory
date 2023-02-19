@@ -9,8 +9,10 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.inventory.R
+import com.example.inventory.data.item.Item
 import com.example.inventory.databinding.FragmentAddProductBinding
 import com.example.inventory.viewmodel.MainViewModel
+import kotlin.properties.Delegates
 
 
 class AddProductFragment : Fragment() {
@@ -20,6 +22,16 @@ class AddProductFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentAddProductBinding == null")
 
     private val sharedViewModel: MainViewModel by activityViewModels()
+
+    private var itemId: Int by Delegates.notNull()
+    private var isNewItem = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            itemId = it.getInt(KEY_ID)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,12 +45,18 @@ class AddProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addRedAsterisk()
+        if (itemId >= 0) {
+            isNewItem = false
+            sharedViewModel.getItem(itemId).observe(this.viewLifecycleOwner) { item ->
+                bind(item)
+            }
+        }
         binding.buttonCancel.setOnClickListener {
             backToInventoryFragment()
         }
 
         binding.buttonSave.setOnClickListener {
-            saveItem()
+            saveItem(isNewItem)
         }
     }
 
@@ -47,18 +65,23 @@ class AddProductFragment : Fragment() {
         _binding = null
     }
 
-    private fun saveItem() {
+    private fun saveItem(isNewItem: Boolean) {
         with(binding) {
             val name = editTextProductName.text.toString()
             val price = editTextProductPrice.text.toString()
             val quantity = editTextQuantity.text.toString()
 
             if ( name.isNotBlank() && price.isNotBlank() && quantity.isNotBlank() ) {
-                sharedViewModel.addItem(
-                    name = name,
-                    price = price.toDouble(),
-                    quantity = quantity.toInt()
-                )
+                if (isNewItem) {
+                    sharedViewModel.addItem(
+                        name = name,
+                        price = price.toDouble(),
+                        quantity = quantity.toInt()
+                    )
+                } else {
+                    val item = Item(itemId, name, price.toDouble(), quantity.toInt())
+                    sharedViewModel.replaceItem(item)
+                }
             } else {
                 Toast.makeText(
                     requireContext(),
@@ -76,11 +99,23 @@ class AddProductFragment : Fragment() {
         findNavController().navigate(action)
     }
 
+    private fun bind(item: Item) {
+        binding.apply {
+            editTextProductName.setText(item.name)
+            editTextProductPrice.setText(item.price.toString())
+            editTextQuantity.setText(item.quantity.toString())
+        }
+    }
+
     private fun addRedAsterisk() {
         with(binding) {
             tilProductName.markRequiredInRed()
             tilProductPrice.markRequiredInRed()
             tilQuantity.markRequiredInRed()
         }
+    }
+
+    companion object {
+        private const val KEY_ID = "item_id"
     }
 }

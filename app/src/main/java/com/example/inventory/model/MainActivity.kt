@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.inventory.R
 import com.example.inventory.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputLayout
+import java.text.NumberFormat
 
 /**
  * Add red asterisk to hint in TextInputLayout
@@ -21,6 +22,9 @@ fun TextInputLayout.markRequiredInRed() {
         color(Color.RED) { append(" *") } // Mind the space prefix.
     }
 }
+
+fun getFormattedPrice(price: Double): String =
+    NumberFormat.getCurrencyInstance().format(price)
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

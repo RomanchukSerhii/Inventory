@@ -14,4 +14,7 @@
     <string name="warning">All fields must bt filled</string>
     <string name="sell">Sell</string>
     <string name="delete">Delete</string>
+    <string name="edit_item_button">Edit item button</string>
+    <string name="add_product_title">Add Product</string>
+    <string name="edit_product_title">Edit Item</string>
 </resources>
